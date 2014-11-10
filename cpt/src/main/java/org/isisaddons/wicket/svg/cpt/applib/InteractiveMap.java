@@ -50,7 +50,7 @@ public class InteractiveMap implements Serializable {
 
     public InteractiveMap(String svg) {
         this.svg = svg;
-        this.elements = new ArrayList<InteractiveMapElement>();
+        this.elements = new ArrayList<>();
     }
 
     public InteractiveMap() {

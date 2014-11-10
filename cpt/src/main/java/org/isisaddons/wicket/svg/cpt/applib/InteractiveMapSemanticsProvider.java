@@ -35,14 +35,17 @@ import org.apache.isis.applib.adapters.ValueSemanticsProvider;
  */
 public class InteractiveMapSemanticsProvider implements ValueSemanticsProvider<InteractiveMap> {
 
+    @Override
     public boolean isEqualByContent() {
         return true;
     }
 
+    @Override
     public boolean isImmutable() {
         return true;
     }
 
+    @Override
     public Parser<InteractiveMap> getParser() {
         return null;
     }
@@ -61,6 +64,7 @@ public class InteractiveMapSemanticsProvider implements ValueSemanticsProvider<I
         };
     }
 
+    @Override
     public DefaultsProvider<InteractiveMap> getDefaultsProvider() {
         return null;
     }
@@ -88,9 +92,7 @@ class Base64Serializer {
         try {
             ois = new ObjectInputStream(new ByteArrayInputStream(data));
             return ois.readObject();
-        } catch (IOException e) {
-            throw new Base64Serializer.Exception(e);
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             throw new Base64Serializer.Exception(e);
         } finally {
             try {

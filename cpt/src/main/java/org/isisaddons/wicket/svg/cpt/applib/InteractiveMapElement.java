@@ -6,21 +6,18 @@ import java.util.List;
 
 public class InteractiveMapElement implements Serializable {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
 
-    private String id;
+    private final String id;
 
-    private String label;
+    private final String label;
 
-    private List<InteractiveMapAttribute> attributes;
+    private final List<InteractiveMapAttribute> attributes;
 
     public InteractiveMapElement(String id, String label) {
         this.id = id;
         this.label = label;
-        attributes = new ArrayList<InteractiveMapAttribute>();
+        attributes = new ArrayList<>();
     }
 
     public String getId() {
