@@ -42,7 +42,7 @@ public class StandaloneValueAsInteractiveMap extends PanelAbstract<ValueModel> {
         InteractiveMap map = (InteractiveMap) mapObj;
 
         
-        addOrReplace(new Label("interactiveMap", map.parse()));
+        addOrReplace(new Label("interactiveMap", map.parse()).setEscapeModelStrings(false));
         
     }
 
