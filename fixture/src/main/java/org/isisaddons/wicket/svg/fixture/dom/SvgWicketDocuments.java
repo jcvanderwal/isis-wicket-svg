@@ -24,6 +24,7 @@ import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.value.Blob;
 
 @DomainService(menuOrder = "10")
+@Named("Documents")
 public class SvgWicketDocuments {
 
     public SvgWicketDocuments() {

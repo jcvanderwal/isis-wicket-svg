@@ -25,6 +25,7 @@ import org.apache.isis.applib.annotation.Bookmarkable;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Title;
 import org.apache.isis.applib.services.clock.ClockService;
 import org.apache.isis.applib.value.Blob;
 
@@ -41,6 +42,7 @@ public class SvgWicketDocument implements Comparable<SvgWicketDocument> {
 
     private String name;
 
+    @Title()
     @Column(allowsNull = "false")
     public String getName() {
         return name;
