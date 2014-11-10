@@ -22,12 +22,16 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 
 import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
 import org.apache.batik.util.XMLResourceDescriptor;
@@ -83,9 +87,18 @@ public class InteractiveMap implements Serializable {
 
             for (InteractiveMapElement element : elements) {
                 Element domElement = doc.getElementById(element.getId());
+
                 if (domElement != null) {
                     for (InteractiveMapAttribute attribute : element.getAttributes()) {
-                        domElement.setAttribute(attribute.getName(), attribute.getValue());
+                        final String cssAttributes = domElement.getAttribute("style");
+                        if (!cssAttributes.isEmpty()) {
+                            // set the fill color as style
+                            domElement.setAttribute("style", replaceCssAttribute(cssAttributes, attribute.getName(), attribute.getValue()));
+                        } else {
+                            // set the fill color as attribute
+                            domElement.setAttribute(attribute.getName(), attribute.getValue());
+                            //TODO: this is a workaround, some attributes apply for css styling, others not
+                        }
                     }
                 }
             }
@@ -95,24 +108,32 @@ public class InteractiveMap implements Serializable {
         }
         return null;
     }
-    
+
+    private String replaceCssAttribute(String cssAttributes, String key, String value) {
+        TreeMap<String, String> map = new TreeMap<String, String>(
+                Splitter.on(";").withKeyValueSeparator(":").split(cssAttributes));
+        if (map.containsKey(key)) {
+            map.put(key, value);
+        }
+        return Joiner.on(";").withKeyValueSeparator(":").join(map);
+    }
+
     private String getStringFromDocument(Document doc)
     {
         try
         {
-           DOMSource domSource = new DOMSource(doc);
-           StringWriter writer = new StringWriter();
-           StreamResult result = new StreamResult(writer);
-           TransformerFactory tf = TransformerFactory.newInstance();
-           Transformer transformer = tf.newTransformer();
-           transformer.transform(domSource, result);
-           return writer.toString();
-        }
-        catch(TransformerException ex)
+            DOMSource domSource = new DOMSource(doc);
+            StringWriter writer = new StringWriter();
+            StreamResult result = new StreamResult(writer);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            return writer.toString();
+        } catch (TransformerException ex)
         {
-           ex.printStackTrace();
-           return null;
+            ex.printStackTrace();
+            return null;
         }
-    } 
+    }
 
 }

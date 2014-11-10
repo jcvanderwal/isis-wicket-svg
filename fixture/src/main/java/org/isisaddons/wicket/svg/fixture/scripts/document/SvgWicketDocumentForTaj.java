@@ -1,4 +1,4 @@
-package org.isisaddons.wicket.svg.fixture.scripts.todo;
+package org.isisaddons.wicket.svg.fixture.scripts.document;
 
 
 public class SvgWicketDocumentForTaj extends SvgWicketDocumentAbstract {

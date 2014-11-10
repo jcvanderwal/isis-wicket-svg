@@ -18,7 +18,8 @@ package org.isisaddons.wicket.svg.fixture.scripts;
 
 import org.apache.isis.applib.fixturescripts.DiscoverableFixtureScript;
 
-import org.isisaddons.wicket.svg.fixture.scripts.todo.SvgWicketDocumentForTaj;
+import org.isisaddons.wicket.svg.fixture.scripts.document.SvgWicketDocumentForDrawing;
+import org.isisaddons.wicket.svg.fixture.scripts.document.SvgWicketDocumentForTaj;
 import org.isisaddons.wicket.svg.fixture.scripts.todo.SvgWicketToDoItemsFixture;
 
 public class SvgWicketAppSetUpFixture extends DiscoverableFixtureScript {
@@ -44,6 +45,7 @@ public class SvgWicketAppSetUpFixture extends DiscoverableFixtureScript {
         // create
         execute(new SvgWicketToDoItemsFixture(), executionContext);
         execute(new SvgWicketDocumentForTaj(), executionContext);
+        execute(new SvgWicketDocumentForDrawing(), executionContext);
     }
 
 }

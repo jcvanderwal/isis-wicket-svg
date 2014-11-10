@@ -17,7 +17,7 @@
  *  under the License.
  */
 
-package org.isisaddons.wicket.svg.fixture.scripts.todo;
+package org.isisaddons.wicket.svg.fixture.scripts.document;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

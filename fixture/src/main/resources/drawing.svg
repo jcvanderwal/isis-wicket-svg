@@ -25,7 +25,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.0576207"
-     inkscape:cx="488.36035"
+     inkscape:cx="321.00357"
      inkscape:cy="428.81409"
      inkscape:current-layer="layer1"
      id="namedview2989"
@@ -33,8 +33,8 @@
      inkscape:snap-global="true"
      inkscape:window-width="1596"
      inkscape:window-height="911"
-     inkscape:window-x="445"
-     inkscape:window-y="1460"
+     inkscape:window-x="172"
+     inkscape:window-y="39"
      inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -68,8 +68,9 @@
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        x="50"
        y="114.09448"
-       id="text4290"
-       sodipodi:linespacing="125%"><tspan
+       id="1"
+       sodipodi:linespacing="125%"
+       inkscape:label="#text4290"><tspan
          sodipodi:role="line"
          id="tspan4292"
          x="50"
@@ -81,7 +82,7 @@
          style="font-size:14px"
          id="tspan4294">Line 2</tspan></text>
     <rect
-       style="fill:none;stroke:#000000;stroke-width:3.54330709;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#c50000;stroke:#000000;stroke-width:3.54330708999999988;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;fill-opacity:1"
        id="rect4315"
        width="140"
        height="130"
@@ -96,31 +97,35 @@
        style="fill:none;stroke:#000000;stroke-width:3.54330707;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     <rect
        style="fill:none;stroke:#000000;stroke-width:3.54330707;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect4341"
+       id="3"
        width="140"
        height="130"
        x="310"
-       y="34.094482" />
+       y="34.094482"
+       inkscape:label="#rect4341" />
     <rect
        y="34.094482"
        x="450"
        height="130"
        width="140"
-       id="rect4343"
-       style="fill:none;stroke:#000000;stroke-width:3.54330707;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       id="4"
+       style="fill:none;stroke:#000000;stroke-width:3.54330707;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:label="#rect4343" />
     <rect
        y="34.094482"
        x="590"
        height="130"
        width="140"
-       id="rect4345"
-       style="fill:none;stroke:#000000;stroke-width:3.54330707;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       id="5"
+       style="fill:none;stroke:#000000;stroke-width:3.54330707;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:label="#rect4345" />
     <rect
        style="fill:none;stroke:#000000;stroke-width:3.54330707;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect4347"
+       id="6"
        width="140"
        height="130"
        x="730"
-       y="34.094482" />
+       y="34.094482"
+       inkscape:label="#rect4347" />
   </g>
 </svg>
