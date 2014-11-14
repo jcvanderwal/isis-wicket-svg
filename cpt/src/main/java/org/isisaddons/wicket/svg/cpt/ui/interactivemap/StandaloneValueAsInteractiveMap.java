@@ -16,6 +16,8 @@
  */
 package org.isisaddons.wicket.svg.cpt.ui.interactivemap;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 
 import org.apache.isis.core.metamodel.adapter.ObjectAdapter;
@@ -23,6 +25,7 @@ import org.apache.isis.viewer.wicket.model.models.ValueModel;
 import org.apache.isis.viewer.wicket.ui.panels.PanelAbstract;
 
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMap;
+import org.isisaddons.wicket.svg.cpt.ui.interactivemap.panzoom.PanZoomBehavior;
 
 public class StandaloneValueAsInteractiveMap extends PanelAbstract<ValueModel> {
 
@@ -41,8 +44,17 @@ public class StandaloneValueAsInteractiveMap extends PanelAbstract<ValueModel> {
         final Object mapObj = mapAdapter.getObject();
         InteractiveMap map = (InteractiveMap) mapObj;
 
-        
-        addOrReplace(new Label("interactiveMap", map.parse()).setEscapeModelStrings(false));
+        WebMarkupContainer zoomInBtn = new WebMarkupContainer("zoomIn");
+        WebMarkupContainer zoomOutBtn = new WebMarkupContainer("zoomOut");
+        addOrReplace(zoomInBtn, zoomOutBtn);
+
+
+        Component interactiveMap = new Label("interactiveMap", map.parse()).setEscapeModelStrings(false);
+        interactiveMap.setOutputMarkupId(true);
+        PanZoomBehavior panZoomBehavior = new PanZoomBehavior();
+        panZoomBehavior.getConfig().withZoomIn(zoomInBtn).withZoomOut(zoomOutBtn);
+        interactiveMap.add(panZoomBehavior);
+        addOrReplace(interactiveMap);
         
     }
 

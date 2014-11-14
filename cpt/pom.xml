@@ -254,17 +254,23 @@ language governing permissions and limitations under the License.
             <version>1.7</version>
         </dependency>
 
-		<dependency>
-		    <groupId>com.github.dzwicker.wicket</groupId>
-		    <artifactId>wicket-svg</artifactId>
-		    <version>6.5.0</version>
+        <dependency>
+            <groupId>com.github.dzwicker.wicket</groupId>
+            <artifactId>wicket-svg</artifactId>
+            <version>6.5.0</version>
         </dependency>
         
         <dependency>
-		    <groupId>org.apache.xmlgraphics</groupId>
-		    <artifactId>batik-svg-dom</artifactId>
-		    <version>1.7</version>
-		</dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-svg-dom</artifactId>
+            <version>1.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.agilecoders.wicket</groupId>
+            <artifactId>wicket-bootstrap-core</artifactId>
+            <version>0.9.7</version>
+        </dependency>
 
         <dependency>
             <!-- ASL v2.0 -->

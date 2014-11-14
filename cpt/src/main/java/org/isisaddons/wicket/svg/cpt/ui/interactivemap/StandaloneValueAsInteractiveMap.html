@@ -15,11 +15,13 @@ either express or implied. See the License for the specific
 language governing permissions and limitations under the License.
 -->
 <html xmlns:wicket="http://wicket.apache.org">
-	<body>
-		<wicket:panel>
-			<div class="standaloneValueAsInteractiveMap">
+    <body>
+        <wicket:panel>
+            <div class="standaloneValueAsInteractiveMap">
                 <div wicket:id="interactiveMap"></div>
-			</div>
-		</wicket:panel>
-	</body>
+                <button type="button" class="btn btn-xm btn-default" wicket:id="zoomIn"><i class="fa fa-search-plus"></i></button>
+                <button type="button" class="btn btn-xm btn-default" wicket:id="zoomOut"><i class="fa fa-search-minus"></i></button>
+            </div>
+        </wicket:panel>
+    </body>
 </html>
