@@ -43,9 +43,8 @@ public class SvgWicketService {
     @NotContributed
     public InteractiveMap showMap(SvgWicketDocument document) {
 
-        String svgString;
         try {
-            svgString = new String(document.getFile().getBytes(), "UTF-8");
+            String svgString = new String(document.getFile().getBytes(), "UTF-8");
             InteractiveMap interactiveMap = new InteractiveMap(svgString);
             Integer i = 1;
             for (SvgWicketToDoItem toDoItem : toDoItems.allToDos()) {

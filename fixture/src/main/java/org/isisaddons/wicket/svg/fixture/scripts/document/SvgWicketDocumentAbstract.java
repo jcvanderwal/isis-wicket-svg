@@ -19,17 +19,15 @@
 
 package org.isisaddons.wicket.svg.fixture.scripts.document;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.activation.MimetypesFileTypeMap;
 
-import org.apache.wicket.util.io.IOUtils;
-
 import org.apache.isis.applib.fixturescripts.DiscoverableFixtureScript;
 import org.apache.isis.applib.value.Blob;
 
+import org.apache.wicket.util.io.IOUtils;
 import org.isisaddons.wicket.svg.fixture.dom.SvgWicketDocuments;
 
 public abstract class SvgWicketDocumentAbstract extends DiscoverableFixtureScript {
@@ -40,15 +38,11 @@ public abstract class SvgWicketDocumentAbstract extends DiscoverableFixtureScrip
 
     private Blob resourceAsBlob(String fileName) {
         try {
-            InputStream is;
-            is = getClass().getResourceAsStream("/" + fileName);
+            InputStream is = getClass().getResourceAsStream("/" + fileName);
             final String mimeType = new MimetypesFileTypeMap().getContentType(fileName);
             Blob blob = new Blob(fileName, mimeType, IOUtils.toByteArray(is));
             is.close();
             return blob;
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

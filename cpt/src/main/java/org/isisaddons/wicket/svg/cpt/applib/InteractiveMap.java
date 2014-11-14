@@ -16,28 +16,18 @@
  */
 package org.isisaddons.wicket.svg.cpt.applib;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
-
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
-import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
-import org.apache.batik.util.XMLResourceDescriptor;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Value;
 
@@ -79,61 +69,31 @@ public class InteractiveMap implements Serializable {
     }
 
     public String parse() {
-        try {
-            String parser = XMLResourceDescriptor.getXMLParserClassName();
-            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
-            String uri = "http://www.example.org/diagram.svg";
-            Document doc = f.createDocument(uri, new StringReader(getSvg()));
+        Document doc = Jsoup.parse(getSvg());
+        for (InteractiveMapElement element : getElements()) {
+            Element domElement = doc.getElementById(element.getId());
 
-            for (InteractiveMapElement element : elements) {
-                Element domElement = doc.getElementById(element.getId());
-
-                if (domElement != null) {
-                    for (InteractiveMapAttribute attribute : element.getAttributes()) {
-                        final String cssAttributes = domElement.getAttribute("style");
-                        if (!cssAttributes.isEmpty()) {
-                            // set the fill color as style
-                            domElement.setAttribute("style", replaceCssAttribute(cssAttributes, attribute.getName(), attribute.getValue()));
-                        } else {
-                            // set the fill color as attribute
-                            domElement.setAttribute(attribute.getName(), attribute.getValue());
-                            //TODO: this is a workaround, some attributes apply for css styling, others not
-                        }
+            if (domElement != null) {
+                for (InteractiveMapAttribute attribute : element.getAttributes()) {
+                    final String cssAttributes = domElement.attr("style");
+                    if (!cssAttributes.isEmpty()) {
+                        // set the fill color as style
+                        domElement.attr("style", replaceCssAttribute(cssAttributes, attribute.getName(), attribute.getValue()));
+                    } else {
+                        // set the fill color as attribute
+                        domElement.attr(attribute.getName(), attribute.getValue());
+                        //TODO: this is a workaround, some attributes apply for css styling, others not
                     }
                 }
             }
-            return getStringFromDocument(doc);
-        } catch (IOException ex) {
-            // ...
         }
-        return null;
+        return doc.outerHtml();
     }
 
     private String replaceCssAttribute(String cssAttributes, String key, String value) {
-        TreeMap<String, String> map = new TreeMap<String, String>(
-                Splitter.on(";").withKeyValueSeparator(":").split(cssAttributes));
-        if (map.containsKey(key)) {
-            map.put(key, value);
-        }
-        return Joiner.on(";").withKeyValueSeparator(":").join(map);
+        Map<String, String> oldAttrsMap = Splitter.on(';').withKeyValueSeparator(':').split(cssAttributes);
+        TreeMap<String, String> map = new TreeMap<>(oldAttrsMap);
+        map.put(key, value);
+        return Joiner.on(';').withKeyValueSeparator(":").join(map);
     }
-
-    private String getStringFromDocument(Document doc)
-    {
-        try
-        {
-            DOMSource domSource = new DOMSource(doc);
-            StringWriter writer = new StringWriter();
-            StreamResult result = new StreamResult(writer);
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            transformer.transform(domSource, result);
-            return writer.toString();
-        } catch (TransformerException ex)
-        {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
 }
