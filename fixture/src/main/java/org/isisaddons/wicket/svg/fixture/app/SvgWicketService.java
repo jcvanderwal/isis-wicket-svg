@@ -17,7 +17,9 @@
 package org.isisaddons.wicket.svg.fixture.app;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -30,6 +32,9 @@ import org.apache.isis.applib.annotation.NotContributed;
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMap;
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMapAttribute;
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMapElement;
+import org.isisaddons.wicket.svg.fixture.dom.Color;
+import org.isisaddons.wicket.svg.fixture.dom.ColorMapHelper;
+import org.isisaddons.wicket.svg.fixture.dom.ColorService;
 import org.isisaddons.wicket.svg.fixture.dom.SvgWicketDocument;
 import org.isisaddons.wicket.svg.fixture.dom.SvgWicketDocuments;
 import org.isisaddons.wicket.svg.fixture.dom.SvgWicketToDoItem;
@@ -43,15 +48,40 @@ public class SvgWicketService {
     @NotContributed
     public InteractiveMap showMap(SvgWicketDocument document) {
 
+        ColorService colorService = new ColorService();
+        Map<Color, Integer> colorMap = new HashMap<Color, Integer>();
+
         try {
             String svgString = new String(document.getFile().getBytes(), "UTF-8");
             InteractiveMap interactiveMap = new InteractiveMap(svgString);
             Integer i = 1;
             for (SvgWicketToDoItem toDoItem : toDoItems.allToDos()) {
-                InteractiveMapElement element = new InteractiveMapElement(i.toString(), toDoItem.getDescription());
-                element.addAttribute(new InteractiveMapAttribute("fill", toDoItem.isComplete() ? "green" : "red"));
+                final Color color = colorService.getColor(toDoItem);
+                colorMap = ColorMapHelper.addToMap(colorMap, color);
+
+                // shape
+                InteractiveMapElement element = new InteractiveMapElement(i.toString());
+                element.addAttribute(new InteractiveMapAttribute("fill", color.getColor()));
                 interactiveMap.addElement(element);
+
+                // label
+                interactiveMap.addElement(new InteractiveMapElement("label" + i.toString(), toDoItem.getDescription()));
+
+                // sub label
+                interactiveMap.addElement(new InteractiveMapElement("subLabel" + i.toString(), toDoItem.getCategory().name()));
+
                 i++;
+            }
+
+            int legendId = 1;
+            for (Color color : ColorMapHelper.sortByValue(colorMap)) {
+                // label
+                interactiveMap.addElement(new InteractiveMapElement(String.format("legend%dText", legendId), color.getLabel()));
+                // color
+                final InteractiveMapElement element = new InteractiveMapElement(String.format("legend%dShape", legendId));
+                element.addAttribute(new InteractiveMapAttribute("fill", color.getColor()));
+                interactiveMap.addElement(element);
+                legendId++;
             }
 
             return interactiveMap;

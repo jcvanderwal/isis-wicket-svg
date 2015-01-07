@@ -18,7 +18,7 @@ public class InteractiveMapTest {
 
         // then
         final String parse = map.parse();
-        assertTrue(parse.contains("green"));
+        assertTrue(parse.contains("fill=\"green\""));
 
     }
 

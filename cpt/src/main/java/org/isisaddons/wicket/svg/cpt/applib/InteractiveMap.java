@@ -27,7 +27,10 @@ import com.google.common.base.Splitter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Document.OutputSettings;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Value;
 
@@ -70,6 +73,9 @@ public class InteractiveMap implements Serializable {
 
     public String parse() {
         Document doc = Jsoup.parse(getSvg());
+        OutputSettings settings = new OutputSettings();
+        settings.prettyPrint(false);
+        doc.outputSettings(settings);
         for (InteractiveMapElement element : getElements()) {
             Element domElement = doc.getElementById(element.getId());
 
@@ -84,6 +90,14 @@ public class InteractiveMap implements Serializable {
                         domElement.attr(attribute.getName(), attribute.getValue());
                         //TODO: this is a workaround, some attributes apply for css styling, others not
                     }
+                }
+                int i = 0;
+                for (String value : element.getValues()) {
+                    final Elements tspans = domElement.getElementsByTag("tspan");
+                    if (tspans.size() > i) {
+                        tspans.get(i).text(value);
+                    }
+                    i++;
                 }
             }
         }
