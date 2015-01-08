@@ -125,5 +125,10 @@ language governing permissions and limitations under the License.
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
     </dependencies>
 </project>
