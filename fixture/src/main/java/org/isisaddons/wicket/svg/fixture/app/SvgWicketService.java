@@ -16,29 +16,27 @@
  */
 package org.isisaddons.wicket.svg.fixture.app;
 
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-
 import org.apache.isis.applib.annotation.ActionSemantics;
 import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotContributed;
-
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMap;
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMapAttribute;
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMapElement;
 import org.isisaddons.wicket.svg.fixture.dom.Color;
 import org.isisaddons.wicket.svg.fixture.dom.ColorMapHelper;
-import org.isisaddons.wicket.svg.fixture.dom.ColorService;
+import org.isisaddons.wicket.svg.fixture.dom.SvgMapRepresentation;
 import org.isisaddons.wicket.svg.fixture.dom.SvgWicketDocument;
 import org.isisaddons.wicket.svg.fixture.dom.SvgWicketDocuments;
 import org.isisaddons.wicket.svg.fixture.dom.SvgWicketToDoItem;
 import org.isisaddons.wicket.svg.fixture.dom.SvgWicketToDoItems;
+
+import javax.inject.Inject;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Named("Interactive Maps")
 @DomainService(menuOrder = "15")
@@ -46,9 +44,8 @@ public class SvgWicketService {
 
     @ActionSemantics(Of.SAFE)
     @NotContributed
-    public InteractiveMap showMap(SvgWicketDocument document) {
+    public InteractiveMap showMap(SvgWicketDocument document, SvgMapRepresentation representation) {
 
-        ColorService colorService = new ColorService();
         Map<Color, Integer> colorMap = new HashMap<Color, Integer>();
 
         try {
@@ -56,7 +53,7 @@ public class SvgWicketService {
             InteractiveMap interactiveMap = new InteractiveMap(svgString);
             Integer i = 1;
             for (SvgWicketToDoItem toDoItem : toDoItems.allToDos()) {
-                final Color color = colorService.getColor(toDoItem);
+                final Color color = representation.getColorService().getColor(toDoItem);
                 colorMap = ColorMapHelper.addToMap(colorMap, color);
 
                 // shape
@@ -104,7 +101,7 @@ public class SvgWicketService {
         if (collection.size() == 0) {
             return null;
         }
-        return showMap(collection.get(0));
+        return showMap(collection.get(0), SvgMapRepresentation.COMPLETED);
     }
 
     // //////////////////////////////////////
