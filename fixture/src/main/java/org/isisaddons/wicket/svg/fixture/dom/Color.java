@@ -1,5 +1,7 @@
 package org.isisaddons.wicket.svg.fixture.dom;
 
+import com.google.common.base.Objects;
+
 public class Color {
     
     final private String color;
@@ -20,24 +22,8 @@ public class Color {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Color color1 = (Color) o;
-
-        if (!color.equals(color1.color)) {
-            return false;
-        }
-        if (!label.equals(color1.label)) {
-            return false;
-        }
-
-        return true;
+    public boolean equals(Object other) {
+        return Objects.equal(this, other);
     }
 
     @Override
