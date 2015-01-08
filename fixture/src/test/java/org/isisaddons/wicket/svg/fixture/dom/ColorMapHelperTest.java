@@ -11,8 +11,8 @@ import org.junit.Test;
 public class ColorMapHelperTest {
 
     @Test
-    public void test() {
-        Map<Color, Integer> map0 = new HashMap<Color, Integer>();
+    public void sortByValue() {
+        Map<Color, Integer> map0 = new HashMap<>();
         final Color green = new Color("green", "Green");
         final Color red = new Color("red", "Red");
 
@@ -23,14 +23,7 @@ public class ColorMapHelperTest {
         assertThat(map3.get(green), is(1));
         assertThat(map3.get(red), is(2));
         assertThat(map3.size(), is(2));
-        
+
         assertThat(ColorMapHelper.sortByValue(map3).get(0), is(red));
     }
-    
-    @Test
-    public void Test2(){
-        assertThat(String.format("a%db", 1), is("a1b"));
-        
-    }
-
 }
