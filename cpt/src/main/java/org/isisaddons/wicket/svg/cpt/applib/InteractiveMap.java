@@ -25,6 +25,7 @@ import java.util.TreeMap;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
+import com.google.common.base.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Document.OutputSettings;
@@ -81,14 +82,16 @@ public class InteractiveMap implements Serializable {
 
             if (domElement != null) {
                 for (InteractiveMapAttribute attribute : element.getAttributes()) {
-                    final String cssAttributes = domElement.attr("style");
-                    if (!cssAttributes.isEmpty()) {
-                        // set the fill color as style
-                        domElement.attr("style", replaceCssAttribute(cssAttributes, attribute.getName(), attribute.getValue()));
+                    String attributeName = attribute.getName();
+                    if ("fill".equals(attributeName)) {
+                        final String cssAttributes = Strings.nullToEmpty(domElement.attr("style"));
+                        domElement.attr("style", replaceCssAttribute(cssAttributes, attributeName, attribute.getValue()));
+                    } else if ("xlink:href".equals(attributeName)) {
+                        final String cssAttributes = Strings.nullToEmpty(domElement.attr("style"));
+                        domElement.attr("style", replaceCssAttribute(cssAttributes, "cursor", "pointer"));
+                        domElement.attr("onclick", "document.location.href='"+attribute.getValue()+"';");
                     } else {
-                        // set the fill color as attribute
-                        domElement.attr(attribute.getName(), attribute.getValue());
-                        //TODO: this is a workaround, some attributes apply for css styling, others not
+                        domElement.attr(attributeName, attribute.getValue());
                     }
                 }
                 int i = 0;

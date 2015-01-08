@@ -21,6 +21,7 @@ import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotContributed;
+import org.apache.isis.applib.services.linking.PojoDeeplinkService;
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMap;
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMapAttribute;
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMapElement;
@@ -34,6 +35,7 @@ import org.isisaddons.wicket.svg.fixture.dom.SvgWicketToDoItems;
 
 import javax.inject.Inject;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +48,7 @@ public class SvgWicketService {
     @NotContributed
     public InteractiveMap showMap(SvgWicketDocument document, SvgMapRepresentation representation) {
 
-        Map<Color, Integer> colorMap = new HashMap<Color, Integer>();
+        Map<Color, Integer> colorMap = new HashMap<>();
 
         try {
             String svgString = new String(document.getFile().getBytes(), "UTF-8");
@@ -59,6 +61,8 @@ public class SvgWicketService {
                 // shape
                 InteractiveMapElement element = new InteractiveMapElement(i.toString());
                 element.addAttribute(new InteractiveMapAttribute("fill", color.getColor()));
+                URI link = pojoDeeplinkService.createLink(toDoItem);
+                element.addAttribute(new InteractiveMapAttribute("xlink:href", link.toString()));
                 interactiveMap.addElement(element);
 
                 // label
@@ -112,4 +116,6 @@ public class SvgWicketService {
     @Inject
     private SvgWicketToDoItems toDoItems;
 
+    @Inject
+    private PojoDeeplinkService pojoDeeplinkService;
 }
