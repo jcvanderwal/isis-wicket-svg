@@ -18,5 +18,32 @@ public class Color {
     public String getLabel() {
         return label;
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Color color1 = (Color) o;
+
+        if (!color.equals(color1.color)) {
+            return false;
+        }
+        if (!label.equals(color1.label)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = color.hashCode();
+        result = 31 * result + label.hashCode();
+        return result;
+    }
 }
