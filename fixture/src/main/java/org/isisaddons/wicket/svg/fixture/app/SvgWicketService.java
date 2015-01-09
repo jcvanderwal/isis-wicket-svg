@@ -21,7 +21,7 @@ import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotContributed;
-import org.apache.isis.applib.services.linking.PojoDeeplinkService;
+import org.apache.isis.applib.services.linking.DeepLinkService;
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMap;
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMapAttribute;
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMapElement;
@@ -61,7 +61,7 @@ public class SvgWicketService {
                 // shape
                 InteractiveMapElement element = new InteractiveMapElement(i.toString());
                 element.addAttribute(new InteractiveMapAttribute("fill", color.getColor()));
-                URI link = pojoDeeplinkService.createLink(toDoItem);
+                URI link = deepLinkService.deepLinkFor(toDoItem);
                 element.addAttribute(new InteractiveMapAttribute("xlink:href", link.toString()));
                 interactiveMap.addElement(element);
 
@@ -117,5 +117,5 @@ public class SvgWicketService {
     private SvgWicketToDoItems toDoItems;
 
     @Inject
-    private PojoDeeplinkService pojoDeeplinkService;
+    private DeepLinkService deepLinkService;
 }
