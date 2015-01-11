@@ -26,6 +26,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Document.OutputSettings;
@@ -108,7 +109,10 @@ public class InteractiveMap implements Serializable {
     }
 
     private String replaceCssAttribute(String cssAttributes, String key, String value) {
-        Map<String, String> oldAttrsMap = Splitter.on(';').withKeyValueSeparator(':').split(cssAttributes);
+        Map<String, String> oldAttrsMap = Maps.newHashMap();
+        if (cssAttributes.length() > 0) {
+            oldAttrsMap = Splitter.on(';').withKeyValueSeparator(':').split(cssAttributes);
+        }
         TreeMap<String, String> map = new TreeMap<>(oldAttrsMap);
         map.put(key, value);
         return Joiner.on(';').withKeyValueSeparator(":").join(map);
