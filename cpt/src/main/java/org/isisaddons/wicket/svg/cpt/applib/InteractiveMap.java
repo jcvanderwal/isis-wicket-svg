@@ -31,6 +31,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Document.OutputSettings;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import org.apache.isis.applib.annotation.Programmatic;
@@ -74,7 +75,7 @@ public class InteractiveMap implements Serializable {
     }
 
     public String parse() {
-        Document doc = Jsoup.parse(getSvg());
+        Document doc = Jsoup.parse(getSvg(), "", Parser.xmlParser());
         OutputSettings settings = new OutputSettings();
         settings.prettyPrint(false);
         doc.outputSettings(settings);
