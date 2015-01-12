@@ -53,12 +53,12 @@ public class InteractiveMap implements Serializable {
         this.elements = new ArrayList<>();
     }
 
-    public InteractiveMap() {
-        // TODO Auto-generated constructor stub
+    public String getTitle() {
+        return title != null ? title : "Interactive Map";
     }
 
-    public String title() {
-        return title != null ? title : "Interactive Map";
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Programmatic
