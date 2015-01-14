@@ -26,6 +26,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -46,11 +47,14 @@ public class InteractiveMap implements Serializable {
 
     private String title;
 
-    private List<InteractiveMapElement> elements;
+    private final List<InteractiveMapElement> elements;
+
+    private final List<Color> legend;
 
     public InteractiveMap(String svg) {
         this.svg = svg;
         this.elements = new ArrayList<>();
+        this.legend = Lists.newArrayList();
     }
 
     public String getTitle() {
@@ -74,6 +78,14 @@ public class InteractiveMap implements Serializable {
         elements.add(element);
     }
 
+    public void addLegendItem(Color item) {
+        legend.add(item);
+    }
+
+    public List<Color> getLegend() {
+        return legend;
+    }
+
     public String parse() {
         Document doc = Jsoup.parse(getSvg(), "", Parser.xmlParser());
         OutputSettings settings = new OutputSettings();
@@ -92,7 +104,10 @@ public class InteractiveMap implements Serializable {
                         final String cssAttributes = Strings.nullToEmpty(domElement.attr("style"));
                         domElement.attr("style", replaceCssAttribute(cssAttributes, "cursor", "pointer"));
                         domElement.attr("onclick", "document.location.href='"+attribute.getValue()+"';");
-                    } else {
+                    } else if ("class".equals(attributeName)) {
+                        domElement.addClass(attribute.getValue());
+                    }
+                    else {
                         domElement.attr(attributeName, attribute.getValue());
                     }
                 }
@@ -110,9 +125,11 @@ public class InteractiveMap implements Serializable {
     }
 
     private String replaceCssAttribute(String cssAttributes, String key, String value) {
-        Map<String, String> oldAttrsMap = Maps.newHashMap();
+        Map<String, String> oldAttrsMap;
         if (cssAttributes.length() > 0) {
             oldAttrsMap = Splitter.on(';').withKeyValueSeparator(':').split(cssAttributes);
+        } else {
+            oldAttrsMap  = Maps.newHashMap();
         }
         TreeMap<String, String> map = new TreeMap<>(oldAttrsMap);
         map.put(key, value);

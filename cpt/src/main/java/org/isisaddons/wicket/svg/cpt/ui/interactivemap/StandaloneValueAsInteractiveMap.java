@@ -16,13 +16,21 @@
  */
 package org.isisaddons.wicket.svg.cpt.ui.interactivemap;
 
-import org.apache.wicket.markup.html.basic.Label;
-
 import org.apache.isis.core.metamodel.adapter.ObjectAdapter;
 import org.apache.isis.viewer.wicket.model.models.ValueModel;
 import org.apache.isis.viewer.wicket.ui.panels.PanelAbstract;
-
+import org.apache.isis.viewer.wicket.ui.panels.PanelUtil;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.resource.JQueryPluginResourceReference;
+import org.isisaddons.wicket.svg.cpt.applib.Color;
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMap;
+
+import java.util.List;
 
 public class StandaloneValueAsInteractiveMap extends PanelAbstract<ValueModel> {
 
@@ -41,9 +49,28 @@ public class StandaloneValueAsInteractiveMap extends PanelAbstract<ValueModel> {
         final Object mapObj = mapAdapter.getObject();
         InteractiveMap map = (InteractiveMap) mapObj;
 
-        
-        addOrReplace(new Label("interactiveMap", map.parse()).setEscapeModelStrings(false));
-        
+        addOrReplace(new SvgLabel("interactiveMap", map));
+
+        addLegend(map);
+    }
+
+    private void addLegend(InteractiveMap map) {
+        List<Color> legend = map.getLegend();
+        final ListView<Color> legendView = new ListView<Color>("legend", legend) {
+            @Override
+            protected void populateItem(ListItem<Color> item) {
+                final Color legendItem = item.getModelObject();
+                item.add(new Label("item", legendItem.getLabel()) {
+                    @Override
+                    protected void onComponentTag(ComponentTag tag) {
+                        super.onComponentTag(tag);
+                        tag.append("style", "background-color:" + legendItem.getColor(), ";");
+                        tag.put("data-ref-class", legendItem.getLabel());
+                    }
+                });
+            }
+        };
+        addOrReplace(legendView);
     }
 
     @Override
@@ -51,4 +78,12 @@ public class StandaloneValueAsInteractiveMap extends PanelAbstract<ValueModel> {
         buildGui();
     }
 
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+
+        Class<StandaloneValueAsInteractiveMap> cls = StandaloneValueAsInteractiveMap.class;
+        PanelUtil.renderHead(response, cls);
+        response.render(JavaScriptHeaderItem.forReference(new JQueryPluginResourceReference(cls, cls.getSimpleName() + ".js")));
+    }
 }

@@ -15,18 +15,25 @@
  *  under the License.
  */
 
-.standaloneValueAsInteractiveMap {
-	width: 99%
-}
+$(function() {
+	/**
+	 * Sets the stroke(-width) attributes to SVG elements
+	 */
+	var strokeHandler = function (stroke, width) {
+		return function() {
+			var $this = $(this);
+			var ref = $this.data('ref-class');
+			$('.' + ref).css(
+			{
+				'stroke-width': width,
+				'stroke': stroke
+			}
+			);
+		}
+	};
 
 
-.standaloneValueAsInteractiveMap svg {
-	width: 100%;
-	height: 100%;
-}
-
-.legendItem {
-	margin-left: 5px;
-	padding-left: 5px;
-	padding-right: 5px;
-}
+	$('.legendItem')
+		.mouseenter(strokeHandler('black', '5'))
+		.mouseleave(strokeHandler('', '0'));
+});
