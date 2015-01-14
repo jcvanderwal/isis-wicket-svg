@@ -17,17 +17,12 @@
 package org.isisaddons.wicket.svg.cpt.applib;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
-
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.Value;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Document.OutputSettings;
@@ -35,8 +30,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
-import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.Value;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @Value(semanticsProviderClass = InteractiveMapSemanticsProvider.class)
 public class InteractiveMap implements Serializable {
@@ -51,10 +49,13 @@ public class InteractiveMap implements Serializable {
 
     private final List<Color> legend;
 
+    private final Map<String, String> elementId2Title;
+
     public InteractiveMap(String svg) {
         this.svg = svg;
-        this.elements = new ArrayList<>();
+        this.elements = Lists.newArrayList();
         this.legend = Lists.newArrayList();
+        this.elementId2Title = Maps.newHashMap();
     }
 
     public String getTitle() {
@@ -84,6 +85,10 @@ public class InteractiveMap implements Serializable {
 
     public List<Color> getLegend() {
         return legend;
+    }
+
+    public Map<String, String> getElementTitle2Id() {
+        return elementId2Title;
     }
 
     public String parse() {

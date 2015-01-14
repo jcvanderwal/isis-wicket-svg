@@ -33,7 +33,34 @@ $(function() {
 	};
 
 
-	$('.legendItem')
+	$('.standaloneValueAsInteractiveMap .legendItem')
 		.mouseenter(strokeHandler('black', '5'))
 		.mouseleave(strokeHandler('', '0'));
+
+	$('.standaloneValueAsInteractiveMap .link')
+		.mouseenter(function() {
+			var $this = $(this);
+			var ref = $this.data('ref-id');
+			$('#' + ref).css(
+			{
+				'stroke-width': '5',
+				'stroke': 'black'
+			}
+			);
+		})
+		.mouseleave(function() {
+			var $this = $(this);
+			var ref = $this.data('ref-id');
+			$('#' + ref).css(
+			{
+				'stroke-width': '0',
+				'stroke': ''
+			}
+			);
+		})
+		.click(function() {
+			var $this = $(this);
+			var ref = $this.data('ref-id');
+			$('#' + ref).click();
+	});
 });

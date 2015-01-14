@@ -21,17 +21,28 @@ language governing permissions and limitations under the License.
 
 				<div class="row">
 					<div class="col-sm-offset-4 col-sm-4">
-						<!--Change representation dropdown-->
+						Change representation
 					</div>
 				</div>
 
 				<div class="row">
 					<div wicket:id="interactiveMap" class="col-sm-10"></div>
 					<div class="col-sm-2">
+						<h4>By name:</h4>
+						<wicket:container wicket:id="links">
+							<div>
+								<span wicket:id="link" class="link"></span>
+							</div>
+						</wicket:container>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-offset-4 col-sm-4">
 						<h4>Legend:</h4>
-						<div wicket:id="legend" class="row">
-							<div wicket:id="item" class="legendItem col-sm-offset-1 col-sm-5"></div>
-						</div>
+						<wicket:container wicket:id="legend">
+							<span wicket:id="item" class="legendItem"></span>
+						</wicket:container>
 					</div>
 				</div>
 

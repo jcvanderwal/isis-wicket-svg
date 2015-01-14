@@ -16,6 +16,10 @@
  */
 package org.isisaddons.wicket.svg.cpt.ui.interactivemap;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.isis.core.metamodel.adapter.ObjectAdapter;
 import org.apache.isis.viewer.wicket.model.models.ValueModel;
 import org.apache.isis.viewer.wicket.ui.panels.PanelAbstract;
@@ -30,7 +34,7 @@ import org.apache.wicket.resource.JQueryPluginResourceReference;
 import org.isisaddons.wicket.svg.cpt.applib.Color;
 import org.isisaddons.wicket.svg.cpt.applib.InteractiveMap;
 
-import java.util.List;
+import com.google.common.collect.Lists;
 
 public class StandaloneValueAsInteractiveMap extends PanelAbstract<ValueModel> {
 
@@ -52,6 +56,28 @@ public class StandaloneValueAsInteractiveMap extends PanelAbstract<ValueModel> {
         addOrReplace(new SvgLabel("interactiveMap", map));
 
         addLegend(map);
+
+        addLinkList(map);
+    }
+
+    private void addLinkList(InteractiveMap map) {
+        final Map<String, String> elementTitle2Id = map.getElementTitle2Id();
+        List<String> titles = Lists.newArrayList(elementTitle2Id.keySet());
+        Collections.sort(titles);
+        final ListView<String> sortedTitlesView = new ListView<String>("links", titles) {
+            @Override
+            protected void populateItem(ListItem<String> item) {
+                final String title = item.getModelObject();
+                item.add(new Label("link", title) {
+                    @Override
+                    protected void onComponentTag(ComponentTag tag) {
+                        super.onComponentTag(tag);
+                        tag.put("data-ref-id", elementTitle2Id.get(title));
+                    }
+                });
+            }
+        };
+        addOrReplace(sortedTitlesView);
     }
 
     private void addLegend(InteractiveMap map) {
